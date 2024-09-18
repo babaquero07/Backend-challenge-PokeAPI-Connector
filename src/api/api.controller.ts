@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
 import { ApiService } from './api.service';
 
 @Controller('api')
@@ -11,13 +11,12 @@ export class ApiController {
   }
 
   @Get('pokemon/:id')
-  findOne(@Param('id') id: string) {
-    return this.apiService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.apiService.getPokemonById(id);
   }
 
-  @Get('pokemonAndTypes/:id')
-  findPokemonAndTypes(@Param('id') id: string) {
-    return this.apiService.findOne(+id);
-    // return this.apiService.findPokemonAndTypes(+id);
-  }
+  // @Get('pokemonAndTypes/:id')
+  // findPokemonAndTypes(@Param('id') id: string) {
+  //   return this.apiService.findPokemonAndTypes(+id);
+  // }
 }
