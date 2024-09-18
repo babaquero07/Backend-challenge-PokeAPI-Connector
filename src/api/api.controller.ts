@@ -15,8 +15,8 @@ export class ApiController {
     return this.apiService.getPokemonById(id);
   }
 
-  // @Get('pokemonAndTypes/:id')
-  // findPokemonAndTypes(@Param('id') id: string) {
-  //   return this.apiService.findPokemonAndTypes(+id);
-  // }
+  @Get('pokemonAndTypes/:id')
+  findPokemonAndTypes(@Param('id') id: string) {
+    return this.apiService.findPokemonAndTypes(id);
+  }
 }

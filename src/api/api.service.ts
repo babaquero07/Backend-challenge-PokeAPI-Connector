@@ -26,4 +26,61 @@ export class ApiService {
       types,
     };
   }
+
+  private async buildPokemonTypesWithTranslations(
+    pokemonData: any,
+  ): Promise<any> {
+    const typesWithTranslations = await Promise.all(
+      pokemonData.types.map(async (typeInfo) => {
+        const typeData = await this.httpService.get(typeInfo.type.url);
+
+        const spanishData = typeData.names.find(
+          (n) => n.language.name === 'es',
+        );
+
+        const japaneseData = typeData.names.find(
+          (n) => n.language.name === 'ja',
+        );
+
+        return {
+          ...typeInfo,
+          type: {
+            ...typeInfo.type,
+            names: [
+              {
+                language: {
+                  name: 'es',
+                  url: spanishData?.language?.url || null,
+                },
+                name: spanishData?.name || null,
+              },
+              {
+                language: {
+                  name: 'ja',
+                  url: japaneseData?.language?.url || null,
+                },
+                name: japaneseData?.name || null,
+              },
+            ],
+          },
+        };
+      }),
+    );
+
+    return typesWithTranslations;
+  }
+
+  async findPokemonAndTypes(id: string): Promise<any> {
+    const pokemonData = await this.httpService.get(
+      `https://pokeapi.co/api/v2/pokemon/${id}`,
+    );
+
+    const typesWithTranslations =
+      await this.buildPokemonTypesWithTranslations(pokemonData);
+
+    return {
+      name: pokemonData.name,
+      types: typesWithTranslations,
+    };
+  }
 }
