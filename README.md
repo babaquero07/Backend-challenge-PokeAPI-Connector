@@ -61,3 +61,7 @@ $ npm run test:cov
 ## License
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+## Deploy URL [AWS]
+
+[API URL](http://18.117.218.74:3000/api/pokemon)

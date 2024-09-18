@@ -14,7 +14,9 @@ export class ApiService {
     private readonly httpService: HttpCustomService,
   ) {}
 
-  private POKE_API_URL = this.configService.get('POKE_API_URL');
+  private POKE_API_URL =
+    this.configService.get('POKE_API_URL') ||
+    'https://pokeapi.co/api/v2/pokemon';
 
   async getPokemons(): Promise<PokemonsResponse> {
     const { results } = await this.httpService.get(
