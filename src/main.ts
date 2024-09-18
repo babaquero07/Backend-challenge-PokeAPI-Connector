@@ -9,7 +9,7 @@ async function bootstrap() {
 
   const logger = new Logger('bootstrap');
 
-  app.setGlobalPrefix('api');
+  // app.setGlobalPrefix('api');
 
   await app.listen(3000);
 
