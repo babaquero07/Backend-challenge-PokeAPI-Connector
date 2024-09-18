@@ -1,12 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { HttpCustomService } from 'src/providers/http/http.service';
+import {
+  PokemonAndTypesResponse,
+  PokemonResponse,
+  PokemonsResponse,
+} from './interfaces';
 
 @Injectable()
 export class ApiService {
   constructor(private readonly httpService: HttpCustomService) {}
 
-  // TODO: Create interfaces for the return types
-  async getPokemons(): Promise<{ results: [{ name: string; url: string }] }> {
+  async getPokemons(): Promise<PokemonsResponse> {
     const { results } = await this.httpService.get(
       'https://pokeapi.co/api/v2/pokemon?limit=100',
     );
@@ -16,7 +20,7 @@ export class ApiService {
     };
   }
 
-  async getPokemonById(id: number): Promise<any> {
+  async getPokemonById(id: string): Promise<PokemonResponse> {
     const { name, types } = await this.httpService.get(
       `https://pokeapi.co/api/v2/pokemon/${id}`,
     );
@@ -27,9 +31,7 @@ export class ApiService {
     };
   }
 
-  private async buildPokemonTypesWithTranslations(
-    pokemonData: any,
-  ): Promise<any> {
+  private async buildPokemonTypesWithTranslations(pokemonData: any) {
     const typesWithTranslations = await Promise.all(
       pokemonData.types.map(async (typeInfo) => {
         const typeData = await this.httpService.get(typeInfo.type.url);
@@ -70,7 +72,7 @@ export class ApiService {
     return typesWithTranslations;
   }
 
-  async findPokemonAndTypes(id: string): Promise<any> {
+  async findPokemonAndTypes(id: string): Promise<PokemonAndTypesResponse> {
     const pokemonData = await this.httpService.get(
       `https://pokeapi.co/api/v2/pokemon/${id}`,
     );

@@ -1,4 +1,4 @@
-import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { ApiService } from './api.service';
 
 @Controller('api')
@@ -11,7 +11,7 @@ export class ApiController {
   }
 
   @Get('pokemon/:id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  findOne(@Param('id') id: string) {
     return this.apiService.getPokemonById(id);
   }
 
