@@ -5,14 +5,20 @@ import {
   PokemonResponse,
   PokemonsResponse,
 } from './interfaces';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class ApiService {
-  constructor(private readonly httpService: HttpCustomService) {}
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly httpService: HttpCustomService,
+  ) {}
+
+  private POKE_API_URL = this.configService.get('POKE_API_URL');
 
   async getPokemons(): Promise<PokemonsResponse> {
     const { results } = await this.httpService.get(
-      'https://pokeapi.co/api/v2/pokemon?limit=100',
+      `${this.POKE_API_URL}?limit=100`,
     );
 
     return {
@@ -22,7 +28,7 @@ export class ApiService {
 
   async getPokemonById(id: string): Promise<PokemonResponse> {
     const { name, types } = await this.httpService.get(
-      `https://pokeapi.co/api/v2/pokemon/${id}`,
+      `${this.POKE_API_URL}/${id}`,
     );
 
     return {
@@ -74,7 +80,7 @@ export class ApiService {
 
   async findPokemonAndTypes(id: string): Promise<PokemonAndTypesResponse> {
     const pokemonData = await this.httpService.get(
-      `https://pokeapi.co/api/v2/pokemon/${id}`,
+      `${this.POKE_API_URL}/${id}`,
     );
 
     const typesWithTranslations =
